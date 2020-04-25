@@ -10,8 +10,10 @@ static inline unsigned char *allocBuffer(unsigned int size) {
 }
 
 static inline void print(const char *string) {
-  asm volatile("mov $0x09, %%ah\n"
-               "int $0x21\n"
+  asm volatile(R"(
+               mov $0x09, %%ah
+               int $0x21
+               )"
                :
                : "d"(string)
                : "ah");

@@ -3,21 +3,25 @@
 void setMode(unsigned short mode) { asm volatile("int $0x10\n" : : "a"(mode)); }
 
 template <class T> void setPalette(const T &f) {
-  asm volatile("mov $0x3c8, %%dx\n"
-               "xor %%al, %%al\n"
-               "out %%al, %%dx\n"
+  asm volatile(R"(
+               mov $0x3c8, %%dx
+               xor %%al, %%al
+               out %%al, %%dx
+               )"
                :
                :
                : "dx", "ax");
   for (int i = 0; i < 256; ++i) {
     int r, g, b;
     f(i, r, g, b);
-    asm volatile("mov $0x3c9, %%dx\n"
-                 "out %%al, %%dx\n"
-                 "mov %%bl, %%al\n"
-                 "out %%al, %%dx\n"
-                 "mov %%bh, %%al\n"
-                 "out %%al, %%dx\n"
+    asm volatile(R"(
+                 mov $0x3c9, %%dx
+                 out %%al, %%dx
+                 mov %%bl, %%al
+                 out %%al, %%dx
+                 mov %%bh, %%al
+                 out %%al, %%dx
+                 )"
                  :
                  : "a"(r), "b"(g | (b << 8))
                  : "dx");

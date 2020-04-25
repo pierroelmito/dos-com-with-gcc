@@ -1,8 +1,10 @@
 
-asm(".code16gcc\n"
-    "call _dosmain\n"
-    "mov $0x4C,%ah\n"
-    "int $0x21\n");
+asm(R"(
+  .code16gcc
+  call _dosmain
+  mov $0x4C,%ah
+  int $0x21
+)");
 
 #include "dos.h"
 
